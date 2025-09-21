@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Launch Planner - Bare & Bear</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .brand-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .brand-info h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .brand-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .brand-detail {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .brand-detail strong {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .progress-overview {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .overall-progress {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .overall-progress h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .progress-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(#667eea 0deg, #764ba2 var(--progress, 0deg), #e0e0e0 var(--progress, 0deg));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .progress-circle::before {
+            content: '';
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .progress-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            z-index: 1;
+        }
+
+        .stage {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .stage:hover {
+            transform: translateY(-5px);
+        }
+
+        .stage-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stage-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .edit-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .editable {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            padding: 5px;
+            border-radius: 5px;
+            cursor: text;
+        }
+
+        .packaging-options {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .packaging-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .packaging-option {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .packaging-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .packaging-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .packaging-pros {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #4caf50;
+        }
+
+        .packaging-cons {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #f44336;
+        }
+
+        .stage-footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+
+        .collapse-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+            width: 40px;
+            height: 40px;
+        }
+
+        .collapse-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .collapse-icon {
+            font-size: 0.8rem;
+        }
+
+        .file-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .file-upload {
+            margin-bottom: 15px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-btn:hover {
+            background: #e3f2fd;
+            border-color: #764ba2;
+        }
+
+        .attached-files {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .file-preview {
+            position: relative;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .file-preview-image {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        .file-preview-video {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            background: #000;
+        }
+
+        .video-thumbnail {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .video-play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .file-preview-icon {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #667eea;
+            background: #f0f0f0;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        .file-preview-name {
+            font-size: 0.8rem;
+            color: #333;
+            text-align: center;
+            word-break: break-all;
+            margin-bottom: 5px;
+        }
+
+        .file-preview-size {
+            font-size: 0.7rem;
+            color: #666;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .file-preview-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(244, 67, 54, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: none; /* Скрываем по умолчанию */
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .file-preview:hover .file-preview-remove {
+            display: flex; /* Показываем при наведении на файл */
+        }
+
+        .file-preview-remove:hover {
+            background: #f44336;
+            transform: scale(1.1);
+        }
+
+        .stage-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .stage-progress {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .stage-content {
+            padding: 30px;
+            display: none;
+        }
+
+        .stage.active .stage-content {
+            display: block;
+        }
+
+        .stage-description {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .tasks-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .task {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .task.high-priority {
+            border-left-color: #ff6b6b;
+        }
+
+        .task.medium-priority {
+            border-left-color: #ffa726;
+        }
+
+        .task.low-priority {
+            border-left-color: #66bb6a;
+        }
+
+        .task.completed {
+            background: #e8f5e8;
+            border-left-color: #4caf50;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .task-checkbox.checked {
+            background: #4caf50;
+            border-color: #4caf50;
+            position: relative;
+        }
+
+        .task-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            position: absolute;
+            top: -2px;
+            left: 3px;
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .task-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .task-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .task-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .priority-badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .priority-high {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .priority-medium {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .priority-low {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .task-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .detail-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .detail-icon {
+            font-size: 1rem;
+            margin-top: 2px;
+        }
+
+        .comment-section {
+            margin-top: 15px;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .comment-display {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 8px;
+            font-style: italic;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .export-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stage-header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .task-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .task-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Заголовок -->
+        <div class="header">
+            <h1><i class="fas fa-target"></i> Brand Launch Planner</h1>
+            <div class="subtitle">Профессиональный планировщик запуска бренда</div>
+            
+            <div class="brand-info">
+                <h3>🐻 Bare & Bear</h3>
+                <div class="brand-details">
+                    <div class="brand-detail">
+                        <strong>Философия</strong>
+                        "Шелк с улыбкой: комфорт без стереотипов"
+                    </div>
+                    <div class="brand-detail">
+                        <strong>Слоган</strong>
+                        "Bare & Bear: Нижнее белье, которое заставляет улыбаться с самого утра"
+                    </div>
+                    <div class="brand-detail">
+                        <strong>Символ</strong>
+                        Медвежонок с ироничными сценариями
+                    </div>
+                    <div class="brand-detail">
+                        <strong>Аудитория</strong>
+                        Женщины 25-45 лет
+                    </div>
+                    <div class="brand-detail">
+                        <strong>Уникальность</strong>
+                        Самоирония, комфорт
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Общий прогресс -->
+        <div class="progress-overview">
+            <div class="overall-progress">
+                <h2><i class="fas fa-chart-line"></i> Общий прогресс запуска</h2>
+                <div class="progress-circle" id="overallProgress">
+                    <span class="progress-text" id="progressText">0%</span>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalTasks">0</span>
+                    <div class="stat-label">Всего задач</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="completedTasks">0</span>
+                    <div class="stat-label">Выполнено</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="remainingTasks">0</span>
+                    <div class="stat-label">Осталось</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="completedStages">0</span>
+                    <div class="stat-label">Этапов завершено</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Этапы -->
+        <div id="stages"></div>
+
+        <!-- Экспорт -->
+        <div class="export-section">
+            <h3>📄 Экспорт и сохранение</h3>
+            <p>Сохраните свой прогресс или экспортируйте план</p>
+            <button class="btn" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> Экспорт в PDF</button>
+            <button class="btn" onclick="printPlan()"><i class="fas fa-print"></i> Печать</button>
+            <button class="btn" onclick="saveProgress()"><i class="fas fa-save"></i> Сохранить прогресс</button>
+            <button class="btn" onclick="loadProgress()"><i class="fas fa-folder-open"></i> Загрузить прогресс</button>
+            <button class="btn" onclick="clearAllFiles()" style="background: #f44336; color: white;"><i class="fas fa-trash"></i> Очистить файлы</button>
+        </div>
+    </div>
+
+    <script>
+        // Данные планировщика
+        const planData = {
+            brandName: "Bare & Bear",
+            stages: [
+                {
+                    id: 1,
+                    name: "Этап 1: Разработка упаковки",
+                    description: "Создание концепции упаковки с медвежонком и ироничными сценариями",
+                    tasks: [
+                        {
+                            id: 1,
+                            name: "Определить концепцию упаковки",
+                            description: "Интегрировать медвежонка с ироничными сценариями (медвежонок 'поправился, но счастлив'), выбрать материалы (шелковая бумага, картон с матовым покрытием).",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "10-30k руб на дизайн и пробу",
+                            tools: "Canva или Adobe Illustrator",
+                            hooks: "Упаковка, которая вызывает улыбку перед открытием",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 2,
+                            name: "Создать дизайн упаковки",
+                            description: "Нанять фриланс-дизайнера (Kwork/FL.ru), предоставить скетчи медвежонка, добавить QR-код для ссылки на сайт с историей бренда.",
+                            priority: "high",
+                            timeframe: "Неделя 1-2",
+                            budget: "15-25k руб",
+                            tools: "Kwork, FL.ru, Adobe Suite",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 3,
+                            name: "Выбрать поставщиков",
+                            description: "Поиск типографий в России (Printio или местные в Москве/СПб), заказать пробные образцы (5-10 шт).",
+                            priority: "high",
+                            timeframe: "Неделя 2",
+                            budget: "5-15k руб на образцы",
+                            tools: "Printio, местные типографии",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 4,
+                            name: "Тестировать упаковку",
+                            description: "Проверить на прочность, эстетику, добавить надписи 'Обними себя с улыбкой'.",
+                            priority: "medium",
+                            timeframe: "Неделя 2-3",
+                            budget: "",
+                            tools: "",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Этап 2: Ассортимент и форматы",
+                    description: "Анализ ЦА и выбор форматов продаж с философией медвежонка",
+                    tasks: [
+                        {
+                            id: 5,
+                            name: "Проанализировать ЦА",
+                            description: "Опросить 20-30 женщин 25-45 через Telegram-опросы о предпочтениях (комфорт vs стиль, юмор в дизайне).",
+                            priority: "high",
+                            timeframe: "Неделя 1-2",
+                            budget: "Бесплатно в Telegram",
+                            tools: "Telegram, Google Forms",
+                            hooks: "Выбери медвежонка, который отражает твой юмор",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 6,
+                            name: "Выбрать форматы продаж",
+                            description: "Штучно (от 1000 руб), наборы (2-3 шт с разными медвежонками, скидка 15%, 'Набор Не переживай').",
+                            priority: "high",
+                            timeframe: "Неделя 2",
+                            budget: "",
+                            tools: "Excel таблица для ассортимента",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 7,
+                            name: "Интегрировать философию",
+                            description: "Каждый item с уникальным медвежонком (опаздывающий, не подстраивающийся).",
+                            priority: "medium",
+                            timeframe: "Неделя 2",
+                            budget: "",
+                            tools: "",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 8,
+                            name: "Адаптировать под каналы",
+                            description: "На сайте - опция кастомизации (выбор медвежонка), на Wildberries - стандартные SKU.",
+                            priority: "medium",
+                            timeframe: "Неделя 3",
+                            budget: "",
+                            tools: "",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Этап 3: Ценообразование",
+                    description: "Разработка стратегии ценообразования с концепцией 'доступный комфорт'",
+                    tasks: [
+                        {
+                            id: 9,
+                            name: "Проанализировать конкурентов",
+                            description: "Изучить цены на нижнее белье в вашей нише (Wildberries, сайты конкурентов), определить средний чек",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "Бесплатно",
+                            tools: "Wildberries, Google, конкурентный анализ",
+                            hooks: "Наша цена должна быть доступной, но не дешевой",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 10,
+                            name: "Рассчитать себестоимость",
+                            description: "Учесть закупку товара, упаковку, доставку, маркетинг, налоги",
+                            priority: "high",
+                            timeframe: "Неделя 1-2",
+                            budget: "",
+                            tools: "Excel, калькулятор",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 11,
+                            name: "Определить наценку",
+                            description: "Установить рентабельную наценку (рекомендуется 100-200% для нижнего белья)",
+                            priority: "high",
+                            timeframe: "Неделя 2",
+                            budget: "",
+                            tools: "",
+                            hooks: "Доступный комфорт - не значит дешево",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 12,
+                            name: "Создать ценовую линейку",
+                            description: "Штучно (от 1500 руб), наборы 2+1 (скидка 15%), подарочные наборы (премиум цена)",
+                            priority: "medium",
+                            timeframe: "Неделя 2-3",
+                            budget: "",
+                            tools: "",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "Этап 4: Настройка доставки",
+                    description: "Организация системы доставки с фиксированной стоимостью и бесплатной доставкой от суммы",
+                    tasks: [
+                        {
+                            id: 13,
+                            name: "Рассчитать порог бесплатной доставки",
+                            description: "Определить средний чек + 20-30%. Если средний чек 1500 руб, то порог 2000 руб для стимулирования допродаж",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "Бесплатно",
+                            tools: "Excel, анализ конкурентов",
+                            hooks: "Порог должен мотивировать покупателя добавить товар в корзину",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 14,
+                            name: "Установить фиксированную стоимость доставки",
+                            description: "200 рублей - справедливая цена, близкая к реальной стоимости доставки Почтой России или СДЭК",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "Бесплатно",
+                            tools: "",
+                            hooks: "Цена не должна пугать покупателей, но покрывать расходы",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 15,
+                            name: "Заключить договор с Почтой России",
+                            description: "Онлайн-тариф для отправлений до 500г (150-250 руб в зависимости от расстояния)",
+                            priority: "high",
+                            timeframe: "Неделя 1-2",
+                            budget: "Бесплатно (только договор)",
+                            tools: "Официальный сайт Почты России",
+                            hooks: "Самый простой и дешевый вариант для старта",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 16,
+                            name: "Настроить калькулятор доставки на сайте",
+                            description: "Для основной зоны (Центр, Юг, Поволжье) - фиксированная цена. Для дальних регионов - расчет по тарифам",
+                            priority: "medium",
+                            timeframe: "Неделя 2",
+                            budget: "5-10k руб на настройку",
+                            tools: "Виджеты СДЭК/Boxberry, или разработчик",
+                            hooks: "Прозрачность цен повышает доверие клиентов",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 17,
+                            name: "Оформить условия доставки на сайте",
+                            description: "Разместить в шапке, подвале, на странице 'Оплата и доставка', в корзине: 'Доставка по России — 200 руб. Бесплатная доставка при заказе от 2000 руб!'",
+                            priority: "high",
+                            timeframe: "Неделя 2",
+                            budget: "Бесплатно",
+                            tools: "Сайт, дизайнер",
+                            hooks: "Четкие условия снижают количество вопросов от клиентов",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 18,
+                            name: "Подготовить упаковку для отправки",
+                            description: "Купить конверты/пакеты для почтовых отправлений, подготовить адресные наклейки",
+                            priority: "medium",
+                            timeframe: "Неделя 2-3",
+                            budget: "2-5k руб на упаковочные материалы",
+                            tools: "Почтовые конверты, пакеты, наклейки",
+                            hooks: "Качественная упаковка = довольные клиенты",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 19,
+                            name: "Настроить уведомления о доставке",
+                            description: "SMS/email уведомления клиентам о статусе заказа: отправлен, в пути, доставлен",
+                            priority: "medium",
+                            timeframe: "Неделя 3",
+                            budget: "3-7k руб на SMS-сервис",
+                            tools: "SMS-сервисы, email-рассылки",
+                            hooks: "Информированность клиентов снижает нагрузку на поддержку",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 5,
+                    name: "Этап 5: Каналы продаж",
+                    description: "Настройка всех точек продаж: сайт, маркетплейсы, соцсети",
+                    tasks: [
+                        {
+                            id: 20,
+                            name: "Создать сайт/лендинг",
+                            description: "Выбрать платформу (Tilda, Shopify, WordPress), настроить дизайн в стиле бренда",
+                            priority: "high",
+                            timeframe: "Неделя 1-2",
+                            budget: "10-30k руб (Tilda) или 15-50k руб (кастом)",
+                            tools: "Tilda, Shopify, WordPress, Figma",
+                            hooks: "Сайт должен отражать философию 'комфорт без стереотипов'",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 14,
+                            name: "Настроить Wildberries",
+                            description: "Регистрация как продавец, загрузка товаров, настройка карточек",
+                            priority: "high",
+                            timeframe: "Неделя 2-3",
+                            budget: "Комиссия WB 5-15%",
+                            tools: "Личный кабинет WB, фото товаров",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 15,
+                            name: "Настроить аккаунты в соцсетях",
+                            description: "Instagram, VK, Telegram канал - единый стиль, контакты, био",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "Бесплатно",
+                            tools: "Instagram, VK, Telegram",
+                            hooks: "Показывать закулисье бренда, медвежонка в разных ситуациях",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 16,
+                            name: "Настроить систему заказов",
+                            description: "WhatsApp/Telegram бот для приема заказов, форма на сайте",
+                            priority: "medium",
+                            timeframe: "Неделя 2",
+                            budget: "5-15k руб на бота",
+                            tools: "Chatfuel, ManyChat, или разработчик",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 5,
+                    name: "Этап 5: Брендинг и визуалы",
+                    description: "Создание логотипа, бренд-бука, фирменного стиля",
+                    tasks: [
+                        {
+                            id: 17,
+                            name: "Создать логотип",
+                            description: "Интеграция медвежонка с названием 'Bare & Bear', несколько вариантов",
+                            priority: "high",
+                            timeframe: "Неделя 1-2",
+                            budget: "10-25k руб (фриланс) или бесплатно (Canva)",
+                            tools: "Canva, Figma, или фриланс-дизайнер",
+                            hooks: "Логотип должен вызывать улыбку",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 18,
+                            name: "Разработать бренд-бук",
+                            description: "Цвета, шрифты, правила использования логотипа, примеры применения",
+                            priority: "medium",
+                            timeframe: "Неделя 2-3",
+                            budget: "Включено в стоимость логотипа",
+                            tools: "Canva, Figma",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 19,
+                            name: "Создать шаблоны для соцсетей",
+                            description: "Story-шаблоны, шаблоны постов, обложки для сторис с медвежонком",
+                            priority: "medium",
+                            timeframe: "Неделя 3",
+                            budget: "Бесплатно (Canva)",
+                            tools: "Canva",
+                            hooks: "Каждый пост должен быть в едином стиле",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 6,
+                    name: "Этап 6: Фотосессия",
+                    description: "Профессиональная съемка товаров и создание контента",
+                    tasks: [
+                        {
+                            id: 20,
+                            name: "Найти фотографа",
+                            description: "Поиск специалиста по предметной съемке, портфолио, договоренность о стоимости",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "15-40k руб за съемку",
+                            tools: "Instagram, FL.ru, рекомендации",
+                            hooks: "Нужен фотограф, который понимает концепцию бренда",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 21,
+                            name: "Подготовить локацию и реквизит",
+                            description: "Аренда студии или подготовка домашней локации, реквизит для lifestyle-съемки",
+                            priority: "medium",
+                            timeframe: "Неделя 1-2",
+                            budget: "5-15k руб на реквизит и локацию",
+                            tools: "",
+                            hooks: "Создать атмосферу комфорта и уюта",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 22,
+                            name: "Провести основную фотосессию",
+                            description: "Съемка товаров отдельно и на модели, разные ракурсы, детали",
+                            priority: "high",
+                            timeframe: "1-2 дня",
+                            budget: "",
+                            tools: "",
+                            hooks: "Получить максимум контента для всех каналов",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 23,
+                            name: "Обработать фотографии",
+                            description: "Ретушь, цветокоррекция, создание разных форматов для сайта и соцсетей",
+                            priority: "medium",
+                            timeframe: "Неделя 1",
+                            budget: "5-10k руб на ретушь или самостоятельно",
+                            tools: "Photoshop, Lightroom, или Canva",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 7,
+                    name: "Этап 7: Контент для маркетинга",
+                    description: "Создание контент-плана, постов, сторис, видео",
+                    tasks: [
+                        {
+                            id: 24,
+                            name: "Создать контент-план",
+                            description: "План публикаций на первый месяц: посты, сторис, reels, темы",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "Бесплатно",
+                            tools: "Notion, Trello, или Excel",
+                            hooks: "Каждый пост должен нести ценность и соответствовать бренду",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 25,
+                            name: "Подготовить тексты для постов",
+                            description: "Написать посты о бренде, философии, советы по выбору белья",
+                            priority: "medium",
+                            timeframe: "Неделя 1-2",
+                            budget: "Бесплатно",
+                            tools: "ChatGPT, или самостоятельно",
+                            hooks: "Тон должен быть дружелюбным и с самоиронией",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 26,
+                            name: "Создать видео-контент",
+                            description: "Reels для Instagram, короткие видео для TikTok, презентационные ролики",
+                            priority: "medium",
+                            timeframe: "Неделя 2-3",
+                            budget: "Бесплатно (снято на телефон)",
+                            tools: "CapCut, InShot, или профессиональная съемка",
+                            hooks: "Показать процесс создания, медвежонка в действии",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 8,
+                    name: "Этап 8: SMM и продвижение",
+                    description: "Запуск продвижения в социальных сетях, работа с инфлюенсерами",
+                    tasks: [
+                        {
+                            id: 27,
+                            name: "Настроить таргетированную рекламу",
+                            description: "Запуск рекламы в Instagram, VK, Facebook с настройкой аудитории",
+                            priority: "high",
+                            timeframe: "Неделя 1-2",
+                            budget: "10-30k руб на тестирование",
+                            tools: "Facebook Ads Manager, VK Ads",
+                            hooks: "Тестировать разные креативы с медвежонком",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 28,
+                            name: "Найти микро-инфлюенсеров",
+                            description: "Поиск блогеров 10-100k подписчиков в нише fashion/красота/женские темы",
+                            priority: "medium",
+                            timeframe: "Неделя 2",
+                            budget: "15-50k руб за коллаборации",
+                            tools: "Instagram, Telegram-каналы, агентства",
+                            hooks: "Выбирать тех, кто разделяет ценности бренда",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 29,
+                            name: "Запустить челленджи",
+                            description: "Создать челлендж #BareAndBearChallenge, привлечь пользователей",
+                            priority: "medium",
+                            timeframe: "Неделя 3",
+                            budget: "5-15k руб на призы",
+                            tools: "Instagram, TikTok",
+                            hooks: "Челлендж должен быть связан с комфортом и самоиронией",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 9,
+                    name: "Этап 9: Рекламные акции",
+                    description: "Создание привлекательных предложений для привлечения клиентов",
+                    tasks: [
+                        {
+                            id: 30,
+                            name: "Разработать стартовые акции",
+                            description: "Скидка 20% на первый заказ, 'Друзья медвежонка' - реферальная программа",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "Потеря прибыли на скидках",
+                            tools: "Промокоды, системы лояльности",
+                            hooks: "Акции должны быть игривыми и запоминающимися",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 31,
+                            name: "Создать сезонные предложения",
+                            description: "Новогодние наборы, День Святого Валентина, 8 марта с особыми медвежонками",
+                            priority: "medium",
+                            timeframe: "Неделя 2",
+                            budget: "",
+                            tools: "",
+                            hooks: "Каждый праздник - новый медвежонок в новой ситуации",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 10,
+                    name: "Этап 10: SEO и оптимизация",
+                    description: "Оптимизация сайта для поисковых систем",
+                    tasks: [
+                        {
+                            id: 32,
+                            name: "Провести SEO-аудит сайта",
+                            description: "Анализ ключевых слов, оптимизация мета-тегов, структуры сайта",
+                            priority: "medium",
+                            timeframe: "Неделя 1",
+                            budget: "5-15k руб (если нанимать специалиста)",
+                            tools: "Google Analytics, Яндекс.Вебмастер, Screaming Frog",
+                            hooks: "Ключевые слова должны включать 'комфортное белье', 'качественное белье'",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 33,
+                            name: "Написать SEO-тексты",
+                            description: "Оптимизированные описания товаров, статьи для блога",
+                            priority: "medium",
+                            timeframe: "Неделя 1-2",
+                            budget: "Бесплатно",
+                            tools: "ChatGPT, или самостоятельно",
+                            hooks: "Тексты должны быть полезными и естественными",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 11,
+                    name: "Этап 11: Тестирование",
+                    description: "A/B тесты рекламы, цен, форматов контента",
+                    tasks: [
+                        {
+                            id: 34,
+                            name: "Настроить A/B тесты рекламы",
+                            description: "Тестировать разные креативы, аудитории, форматы объявлений",
+                            priority: "high",
+                            timeframe: "Неделя 1-2",
+                            budget: "Включается в рекламный бюджет",
+                            tools: "Facebook Ads Manager, Google Analytics",
+                            hooks: "Тестировать креативы с разными медвежонками",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 35,
+                            name: "Протестировать цены",
+                            description: "A/B тест разных ценовых позиций на одном товаре",
+                            priority: "medium",
+                            timeframe: "Неделя 2-3",
+                            budget: "Временно сниженная прибыль",
+                            tools: "Сайт, аналитика",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 12,
+                    name: "Этап 12: Запуск кампании",
+                    description: "Официальный запуск бренда, анонс, мониторинг",
+                    tasks: [
+                        {
+                            id: 36,
+                            name: "Создать анонс запуска",
+                            description: "Пост-анонс в соцсетях, email-рассылка, пресс-релиз",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "Бесплатно",
+                            tools: "Соцсети, email-сервисы",
+                            hooks: "Анонс должен создать ажиотаж и ожидание",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 37,
+                            name: "Запустить предзаказы",
+                            description: "Прием предзаказов со скидкой, сбор email-базы",
+                            priority: "high",
+                            timeframe: "Неделя 1-2",
+                            budget: "Скидка на предзаказы",
+                            tools: "Сайт, формы заказов",
+                            hooks: "Ограниченное количество предзаказов для создания дефицита",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 38,
+                            name: "Мониторить первые дни",
+                            description: "Отслеживание продаж, отзывов, обращений в поддержку",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "",
+                            tools: "Аналитика, CRM",
+                            hooks: "Быстро реагировать на любые проблемы",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 13,
+                    name: "Этап 13: Анализ и развитие",
+                    description: "Анализ результатов запуска, планирование развития",
+                    tasks: [
+                        {
+                            id: 39,
+                            name: "Проанализировать метрики",
+                            description: "Продажи, конверсии, популярные товары, ROI рекламы",
+                            priority: "high",
+                            timeframe: "Неделя 1",
+                            budget: "Бесплатно",
+                            tools: "Google Analytics, отчеты маркетплейсов",
+                            hooks: "Определить самые успешные каналы и стратегии",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 40,
+                            name: "Собрать отзывы клиентов",
+                            description: "Опросы, интервью, анализ отзывов для улучшения продукта",
+                            priority: "medium",
+                            timeframe: "Неделя 1-2",
+                            budget: "5-10k руб на подарки за отзывы",
+                            tools: "Google Forms, интервью, отзывы",
+                            hooks: "Понимать, что именно нравится клиентам",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 41,
+                            name: "Спланировать развитие",
+                            description: "Новые товары, расширение ассортимента, новые каналы продаж",
+                            priority: "medium",
+                            timeframe: "Неделя 2-3",
+                            budget: "",
+                            tools: "",
+                            hooks: "Планировать на основе данных и отзывов",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromStorage(); // Сначала загружаем данные
+            renderStages();    // Потом отрисовываем
+            updateProgress();  // И обновляем прогресс
+        });
+
+        // Отрисовка этапов
+        function renderStages() {
+            const stagesContainer = document.getElementById('stages');
+            stagesContainer.innerHTML = '';
+
+            planData.stages.forEach(stage => {
+                const stageElement = createStageElement(stage);
+                stagesContainer.appendChild(stageElement);
+            });
+        }
+
+        // Создание элемента этапа
+        function createStageElement(stage) {
+            const stageDiv = document.createElement('div');
+            stageDiv.className = 'stage';
+            stageDiv.id = `stage-${stage.id}`;
+
+            const completedTasks = stage.tasks.filter(task => task.completed).length;
+            const totalTasks = stage.tasks.length;
+            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+            stageDiv.innerHTML = `
+                <div class="stage-header" onclick="toggleStage(${stage.id})">
+                    <div class="stage-title" contenteditable="false" id="stage-title-${stage.id}">${stage.name}</div>
+                    <div class="stage-controls">
+                    <div class="stage-progress">${progressPercent}% (${completedTasks}/${totalTasks})</div>
+                        <button class="edit-btn" onclick="toggleEditStage(${stage.id}); event.stopPropagation();"><i class="fas fa-edit"></i> Редактировать</button>
+                        <div class="stage-file-upload">
+                            <input type="file" id="stage-file-input-${stage.id}" class="file-input" 
+                                   accept="image/*,video/mp4,.pdf,.doc,.docx,.xls,.xlsx" 
+                                   onchange="handleStageFileUpload(${stage.id}, this.files)" multiple>
+                            <label for="stage-file-input-${stage.id}" class="file-upload-btn">
+                                <i class="fas fa-paperclip"></i> Файлы
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="stage-content">
+                    <div class="stage-description" contenteditable="false" id="stage-description-${stage.id}">${stage.description}</div>
+                    ${stage.id === 1 ? createPackagingOptions() : ''}
+                    <div class="tasks-grid">
+                        ${stage.tasks.map(task => createTaskElement(task, stage.id)).join('')}
+                    </div>
+                    <div class="stage-footer">
+                        <button class="collapse-btn" onclick="toggleStage(${stage.id})" title="Свернуть этап">
+                            <span class="collapse-icon"><i class="fas fa-chevron-up"></i></span>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            return stageDiv;
+        }
+
+        // Создание элемента задачи
+        function createTaskElement(task, stageId) {
+            const priorityClass = `${task.priority}-priority`;
+            const completedClass = task.completed ? 'completed' : '';
+            const checkedClass = task.completed ? 'checked' : '';
+
+            return `
+                <div class="task ${priorityClass} ${completedClass}" id="task-${task.id}">
+                    <div class="task-header">
+                        <div class="task-checkbox ${checkedClass}" onclick="toggleTask(${task.id}, ${stageId})"></div>
+                        <div class="task-info">
+                            <div class="task-name" contenteditable="false" id="task-name-${task.id}" onblur="updateTaskName(${task.id}, this.textContent)">${task.name}</div>
+                            <div class="task-description" contenteditable="false" id="task-desc-${task.id}" onblur="updateTaskDescription(${task.id}, this.textContent)">${task.description}</div>
+                            <div class="task-meta">
+                                <span><span class="priority-badge priority-${task.priority}">${getPriorityText(task.priority)}</span></span>
+                        <span><i class="fas fa-calendar-alt"></i> <span contenteditable="false" id="task-timeframe-${task.id}" onblur="updateTaskTimeframe(${task.id}, this.textContent)">${task.timeframe}</span></span>
+                        ${task.budget ? `<span><i class="fas fa-ruble-sign"></i> <span contenteditable="false" id="task-budget-${task.id}" onblur="updateTaskBudget(${task.id}, this.textContent)">${task.budget}</span></span>` : ''}
+                            </div>
+                        </div>
+                        <button class="edit-btn" onclick="toggleEditTask(${task.id}); event.stopPropagation();" style="margin-left: 10px; font-size: 0.8rem;"><i class="fas fa-edit"></i></button>
+                    </div>
+                    ${task.tools || task.hooks ? `
+                        <div class="task-details">
+                            ${task.tools ? `<div class="detail-item"><span class="detail-icon"><i class="fas fa-tools"></i></span> <strong>Инструменты:</strong> <span contenteditable="false" id="task-tools-${task.id}" onblur="updateTaskTools(${task.id}, this.textContent)">${task.tools}</span></div>` : ''}
+                            ${task.hooks ? `<div class="detail-item"><span class="detail-icon"><i class="fas fa-bullseye"></i></span> <strong>Хуки:</strong> <span contenteditable="false" id="task-hooks-${task.id}" onblur="updateTaskHooks(${task.id}, this.textContent)">${task.hooks}</span></div>` : ''}
+                        </div>
+                    ` : ''}
+                    <div class="comment-section">
+                        <textarea class="comment-input" placeholder="Добавить комментарий..." 
+                                onchange="updateComment(${task.id}, this.value)">${task.comment}</textarea>
+                        ${task.comment ? `<div class="comment-display">${task.comment}</div>` : ''}
+                    </div>
+                    <div class="file-section">
+                        <div class="file-upload">
+                            <input type="file" id="file-input-${task.id}" class="file-input" 
+                                   accept="image/*,video/mp4,.pdf,.doc,.docx,.xls,.xlsx" 
+                                   onchange="handleFileUpload(${task.id}, this.files)" multiple>
+                            <label for="file-input-${task.id}" class="file-upload-btn">
+                                <i class="fas fa-paperclip"></i> Прикрепить файлы
+                            </label>
+                        </div>
+                        <div class="attached-files" id="attached-files-${task.id}">
+                            ${task.attachedFiles ? task.attachedFiles.map(file => createFilePreview(file, task.id)).join('') : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Получение текста приоритета
+        function getPriorityText(priority) {
+            const priorities = {
+                'high': 'Высокий',
+                'medium': 'Средний',
+                'low': 'Низкий'
+            };
+            return priorities[priority] || priority;
+        }
+
+        // Переключение этапа
+        function toggleStage(stageId) {
+            const stageElement = document.getElementById(`stage-${stageId}`);
+            const collapseBtn = stageElement.querySelector('.collapse-btn');
+            const collapseIcon = collapseBtn.querySelector('.collapse-icon');
+            
+            stageElement.classList.toggle('active');
+            
+            // Обновляем кнопку внизу
+            if (stageElement.classList.contains('active')) {
+                collapseIcon.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                collapseBtn.title = 'Свернуть этап';
+            } else {
+                collapseIcon.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                collapseBtn.title = 'Развернуть этап';
+            }
+        }
+
+        // Переключение задачи
+        function toggleTask(taskId, stageId) {
+            // Найти задачу в данных
+            const stage = planData.stages.find(s => s.id === stageId);
+            const task = stage.tasks.find(t => t.id === taskId);
+            
+            // Переключить статус
+            task.completed = !task.completed;
+            
+            // Обновить только прогресс и статус задачи, не перерисовывая весь этап
+            updateTaskStatus(taskId, stageId, task.completed);
+            updateProgress();
+            saveToStorage();
+        }
+
+        // Обновление статуса задачи без перерисовки этапа
+        function updateTaskStatus(taskId, stageId, isCompleted) {
+            const taskElement = document.getElementById(`task-${taskId}`);
+            const checkbox = taskElement.querySelector('.task-checkbox');
+            
+            // Обновить чекбокс
+            if (isCompleted) {
+                checkbox.classList.add('checked');
+                taskElement.classList.add('completed');
+            } else {
+                checkbox.classList.remove('checked');
+                taskElement.classList.remove('completed');
+            }
+            
+            // Обновить прогресс этапа
+            const stageElement = document.getElementById(`stage-${stageId}`);
+            const stage = planData.stages.find(s => s.id === stageId);
+            const completedTasks = stage.tasks.filter(task => task.completed).length;
+            const totalTasks = stage.tasks.length;
+            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            const progressElement = stageElement.querySelector('.stage-progress');
+            progressElement.textContent = `${progressPercent}% (${completedTasks}/${totalTasks})`;
+        }
+
+        // Обновление комментария
+        function updateComment(taskId, comment) {
+            // Найти задачу во всех этапах
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.comment = comment;
+                    saveToStorage();
+                    break;
+                }
+            }
+        }
+
+        // Обновление прогресса
+        function updateProgress() {
+            const totalTasks = planData.stages.reduce((sum, stage) => sum + stage.tasks.length, 0);
+            const completedTasks = planData.stages.reduce((sum, stage) => 
+                sum + stage.tasks.filter(task => task.completed).length, 0);
+            const remainingTasks = totalTasks - completedTasks;
+            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            const completedStages = planData.stages.filter(stage => 
+                stage.tasks.every(task => task.completed) && stage.tasks.length > 0).length;
+
+            // Обновить круговой прогресс
+            const progressCircle = document.getElementById('overallProgress');
+            const progressDegrees = (progressPercent / 100) * 360;
+            progressCircle.style.setProperty('--progress', `${progressDegrees}deg`);
+            
+            // Обновить текст
+            document.getElementById('progressText').textContent = `${progressPercent}%`;
+            document.getElementById('totalTasks').textContent = totalTasks;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            document.getElementById('remainingTasks').textContent = remainingTasks;
+            document.getElementById('completedStages').textContent = completedStages;
+        }
+
+        // Сохранение в localStorage
+        function saveToStorage() {
+            try {
+            localStorage.setItem('brandLaunchPlanner', JSON.stringify(planData));
+            } catch (error) {
+                if (error.name === 'QuotaExceededError') {
+                    // Попробовать очистить старые файлы
+                    cleanupOldFiles();
+                    try {
+                        localStorage.setItem('brandLaunchPlanner', JSON.stringify(planData));
+                    } catch (secondError) {
+                        alert('Недостаточно места для сохранения. Удалите некоторые прикрепленные файлы.');
+                    }
+                } else {
+                    throw error;
+                }
+            }
+        }
+
+        function cleanupOldFiles() {
+            // Удалить файлы старше 30 дней
+            const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+            
+            planData.stages.forEach(stage => {
+                stage.tasks.forEach(task => {
+                    if (task.attachedFiles) {
+                        task.attachedFiles = task.attachedFiles.filter(file => {
+                            const uploadDate = new Date(file.uploadDate);
+                            return uploadDate > thirtyDaysAgo;
+                        });
+                    }
+                });
+            });
+        }
+
+        function clearAllFiles() {
+            if (confirm('Вы уверены, что хотите удалить все прикрепленные файлы? Это действие нельзя отменить.')) {
+                planData.stages.forEach(stage => {
+                    stage.tasks.forEach(task => {
+                        if (task.attachedFiles) {
+                            task.attachedFiles = [];
+                        }
+                    });
+                });
+                
+                // Обновить отображение
+                updateTasksVisualState();
+                saveToStorage();
+                alert('Все файлы удалены!');
+            }
+        }
+
+        // Загрузка из localStorage
+        function loadFromStorage() {
+            const saved = localStorage.getItem('brandLaunchPlanner');
+            if (saved) {
+                const savedData = JSON.parse(saved);
+                // Обновить статусы задач, комментарии и прикрепленные файлы
+                planData.stages.forEach((stage, stageIndex) => {
+                    stage.tasks.forEach((task, taskIndex) => {
+                        if (savedData.stages[stageIndex] && savedData.stages[stageIndex].tasks[taskIndex]) {
+                            const savedTask = savedData.stages[stageIndex].tasks[taskIndex];
+                            task.completed = savedTask.completed || false;
+                            task.comment = savedTask.comment || '';
+                            // Загружаем прикрепленные файлы
+                            if (savedTask.attachedFiles) {
+                                task.attachedFiles = savedTask.attachedFiles;
+                            }
+                        }
+                    });
+                });
+                // Обновляем визуальное состояние задач без перерисовки
+                updateTasksVisualState();
+                updateProgress();
+            }
+        }
+
+        // Обновление визуального состояния задач
+        function updateTasksVisualState() {
+            planData.stages.forEach(stage => {
+                stage.tasks.forEach(task => {
+                    const taskElement = document.getElementById(`task-${task.id}`);
+                    if (taskElement) {
+                        const checkbox = taskElement.querySelector('.task-checkbox');
+                        if (task.completed) {
+                            checkbox.classList.add('checked');
+                            taskElement.classList.add('completed');
+                        } else {
+                            checkbox.classList.remove('checked');
+                            taskElement.classList.remove('completed');
+                        }
+                        
+                        // Обновить отображение прикрепленных файлов
+                        if (task.attachedFiles && task.attachedFiles.length > 0) {
+                            updateFileDisplay(task.id);
+                        }
+                    }
+                });
+                
+                // Обновляем состояние кнопки сворачивания
+                const stageElement = document.getElementById(`stage-${stage.id}`);
+                if (stageElement) {
+                    const collapseBtn = stageElement.querySelector('.collapse-btn');
+                    if (collapseBtn) {
+                        const collapseIcon = collapseBtn.querySelector('.collapse-icon');
+                        
+                        if (stageElement.classList.contains('active')) {
+                            collapseIcon.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                            collapseBtn.title = 'Свернуть этап';
+                        } else {
+                            collapseIcon.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                            collapseBtn.title = 'Развернуть этап';
+                        }
+                    }
+                }
+            });
+        }
+
+        // Функции экспорта
+        function saveProgress() {
+            const dataStr = JSON.stringify(planData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'brand_launch_progress.json';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function loadProgress() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const loadedData = JSON.parse(e.target.result);
+                            // Обновить данные
+                            planData.stages.forEach((stage, stageIndex) => {
+                                stage.tasks.forEach((task, taskIndex) => {
+                                    if (loadedData.stages[stageIndex] && loadedData.stages[stageIndex].tasks[taskIndex]) {
+                                        const loadedTask = loadedData.stages[stageIndex].tasks[taskIndex];
+                                        task.completed = loadedTask.completed || false;
+                                        task.comment = loadedTask.comment || '';
+                                        // Загружаем прикрепленные файлы
+                                        if (loadedTask.attachedFiles) {
+                                            task.attachedFiles = loadedTask.attachedFiles;
+                                        }
+                                    }
+                                });
+                            });
+                            // Обновляем визуальное состояние без перерисовки
+                            updateTasksVisualState();
+                            updateProgress();
+                            saveToStorage();
+                            alert('Прогресс успешно загружен!');
+                        } catch (error) {
+                            alert('Ошибка при загрузке файла!');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        function exportToPDF() {
+            window.print();
+        }
+
+        function printPlan() {
+            window.print();
+        }
+
+        // Функция создания вариантов упаковки
+        function createPackagingOptions() {
+            return `
+                <div class="packaging-options">
+                    <h3><i class="fas fa-box"></i> Варианты упаковки для Bare & Bear</h3>
+                    <div class="packaging-grid">
+                        <div class="packaging-option">
+                            <div class="packaging-title"><i class="fas fa-gift"></i> Конфетная коробка</div>
+                            <div class="packaging-description">Крафтовая коробка как конфета с стикером "Выпусти меня на свободу!" - игривый подход к распаковке</div>
+                            <div class="packaging-pros"><i class="fas fa-check-circle" style="color: #4caf50;"></i> Уникальность, эмоции распаковки, средняя стоимость (5-8k за 100 шт)</div>
+                            <div class="packaging-cons"><i class="fas fa-times-circle" style="color: #f44336;"></i> Нужен креативный дизайн стикера</div>
+                        </div>
+                        <div class="packaging-option">
+                            <div class="packaging-title"><i class="fas fa-palette"></i> Минимализм с юмором</div>
+                            <div class="packaging-description">Крафт-пакет с простым рисунком медвежонка. Слоган: "Комфорт без стереотипов"</div>
+                            <div class="packaging-pros"><i class="fas fa-check-circle" style="color: #4caf50;"></i> Эко-тренд, низкая стоимость (3-5k за 100 шт)</div>
+                            <div class="packaging-cons"><i class="fas fa-times-circle" style="color: #f44336;"></i> Менее премиум, может показаться простой</div>
+                        </div>
+                        <div class="packaging-option">
+                            <div class="packaging-title"><i class="fas fa-gift"></i> Подарочный набор</div>
+                            <div class="packaging-description">Специальная коробка для наборов с отделениями. Каждый медвежонок - отдельная история</div>
+                            <div class="packaging-pros"><i class="fas fa-check-circle" style="color: #4caf50;"></i> Увеличивает средний чек, премиум</div>
+                            <div class="packaging-cons"><i class="fas fa-times-circle" style="color: #f44336;"></i> Сложная логистика, высокая стоимость</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Функция переключения режима редактирования этапа
+        function toggleEditStage(stageId) {
+            const titleElement = document.getElementById(`stage-title-${stageId}`);
+            const descElement = document.getElementById(`stage-description-${stageId}`);
+            const editBtn = event.target;
+            
+            const isEditing = titleElement.contentEditable === 'true';
+            
+            if (isEditing) {
+                // Сохраняем изменения
+                titleElement.contentEditable = 'false';
+                descElement.contentEditable = 'false';
+                titleElement.classList.remove('editable');
+                descElement.classList.remove('editable');
+                editBtn.textContent = '✏️ Редактировать';
+                
+                // Обновляем данные
+                const stage = planData.stages.find(s => s.id === stageId);
+                stage.name = titleElement.textContent;
+                stage.description = descElement.textContent;
+                
+                saveToStorage();
+            } else {
+                // Включаем редактирование
+                titleElement.contentEditable = 'true';
+                descElement.contentEditable = 'true';
+                titleElement.classList.add('editable');
+                descElement.classList.add('editable');
+                editBtn.textContent = '💾 Сохранить';
+                
+                // Фокус на заголовок
+                titleElement.focus();
+            }
+        }
+
+        // Функция переключения режима редактирования задачи
+        function toggleEditTask(taskId) {
+            const nameElement = document.getElementById(`task-name-${taskId}`);
+            const descElement = document.getElementById(`task-desc-${taskId}`);
+            const timeframeElement = document.getElementById(`task-timeframe-${taskId}`);
+            const budgetElement = document.getElementById(`task-budget-${taskId}`);
+            const toolsElement = document.getElementById(`task-tools-${taskId}`);
+            const hooksElement = document.getElementById(`task-hooks-${taskId}`);
+            const editBtn = event.target;
+            
+            const isEditing = nameElement.contentEditable === 'true';
+            
+            if (isEditing) {
+                // Сохраняем изменения
+                nameElement.contentEditable = 'false';
+                descElement.contentEditable = 'false';
+                if (timeframeElement) timeframeElement.contentEditable = 'false';
+                if (budgetElement) budgetElement.contentEditable = 'false';
+                if (toolsElement) toolsElement.contentEditable = 'false';
+                if (hooksElement) hooksElement.contentEditable = 'false';
+                
+                nameElement.classList.remove('editable');
+                descElement.classList.remove('editable');
+                if (timeframeElement) timeframeElement.classList.remove('editable');
+                if (budgetElement) budgetElement.classList.remove('editable');
+                if (toolsElement) toolsElement.classList.remove('editable');
+                if (hooksElement) hooksElement.classList.remove('editable');
+                
+                editBtn.textContent = '✏️';
+                
+                saveToStorage();
+            } else {
+                // Включаем редактирование
+                nameElement.contentEditable = 'true';
+                descElement.contentEditable = 'true';
+                if (timeframeElement) timeframeElement.contentEditable = 'true';
+                if (budgetElement) budgetElement.contentEditable = 'true';
+                if (toolsElement) toolsElement.contentEditable = 'true';
+                if (hooksElement) hooksElement.contentEditable = 'true';
+                
+                nameElement.classList.add('editable');
+                descElement.classList.add('editable');
+                if (timeframeElement) timeframeElement.classList.add('editable');
+                if (budgetElement) budgetElement.classList.add('editable');
+                if (toolsElement) toolsElement.classList.add('editable');
+                if (hooksElement) hooksElement.classList.add('editable');
+                
+                editBtn.textContent = '💾';
+                
+                // Фокус на название
+                nameElement.focus();
+            }
+        }
+
+        // Функции работы с файлами
+        function handleFileUpload(taskId, files) {
+            for (let file of files) {
+                // Проверка размера файла в зависимости от типа
+                const isVideo = file.type.startsWith('video/');
+                const maxSize = isVideo ? 200 * 1024 * 1024 : 20 * 1024 * 1024; // 200MB для видео, 20MB для остальных
+                const maxSizeText = isVideo ? '200MB' : '20MB';
+                
+                if (file.size > maxSize) {
+                    alert(`Файл "${file.name}" слишком большой. Максимальный размер: ${maxSizeText}`);
+                    continue;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    let fileData;
+                    
+                    if (file.type.startsWith('image/')) {
+                        // Для изображений создаем оптимизированную версию
+                        fileData = {
+                            id: Date.now() + Math.random(),
+                            name: file.name,
+                            type: file.type,
+                            size: file.size,
+                            data: e.target.result,
+                            uploadDate: new Date().toISOString(),
+                            isImage: true,
+                            isVideo: false
+                        };
+                    } else if (file.type.startsWith('video/')) {
+                        // Для видео создаем превью и сохраняем только метаданные
+                        const video = document.createElement('video');
+                        video.src = e.target.result;
+                        video.currentTime = 1; // Берем кадр на 1 секунде
+                        
+                        video.addEventListener('loadeddata', function() {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            canvas.width = video.videoWidth;
+                            canvas.height = video.videoHeight;
+                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            
+                            const thumbnail = canvas.toDataURL('image/jpeg', 0.7); // Сжимаем превью
+                            
+                            fileData = {
+                                id: Date.now() + Math.random(),
+                                name: file.name,
+                                type: file.type,
+                                size: file.size,
+                                thumbnail: thumbnail, // Превью вместо полного видео
+                                uploadDate: new Date().toISOString(),
+                                isImage: false,
+                                isVideo: true
+                            };
+                            
+                            // Добавить файл к задаче
+                            addFileToTask(fileData, taskId);
+                        });
+                        
+                        return; // Выходим из функции, так как обработка асинхронная
+                    } else {
+                        // Для документов сохраняем только метаданные
+                        fileData = {
+                            id: Date.now() + Math.random(),
+                            name: file.name,
+                            type: file.type,
+                            size: file.size,
+                            uploadDate: new Date().toISOString(),
+                            isImage: false,
+                            isVideo: false
+                        };
+                    }
+                    
+                    // Добавить файл к задаче
+                    addFileToTask(fileData, taskId);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addFileToTask(fileData, taskId) {
+            // Найти задачу и добавить файл
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task) {
+                    if (!task.attachedFiles) {
+                        task.attachedFiles = [];
+                    }
+                    task.attachedFiles.push(fileData);
+                    
+                    // Обновить отображение
+                    updateFileDisplay(taskId);
+                    
+                    // Попробовать сохранить с обработкой ошибок
+                    try {
+                        saveToStorage();
+                    } catch (error) {
+                        if (error.name === 'QuotaExceededError') {
+                            // Удалить файл и показать предупреждение
+                            task.attachedFiles.pop();
+                            updateFileDisplay(taskId);
+                            alert('Недостаточно места для сохранения файла. Удалите старые файлы или выберите файл меньшего размера.');
+                        } else {
+                            throw error;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        function createFilePreview(file, taskId) {
+            const isImage = file.isImage && file.data;
+            const isVideo = file.isVideo && file.thumbnail;
+            const fileIcon = getFileIcon(file.type);
+            
+            return `
+                <div class="file-preview">
+                    ${isImage ? 
+                        `<img src="${file.data}" alt="${file.name}" class="file-preview-image" onclick="openImageModal('${file.data}', '${file.name}')">` :
+                        isVideo ?
+                        `<div class="video-thumbnail" onclick="showVideoInfo('${file.name}', '${formatFileSize(file.size)}')">
+                            <img src="${file.thumbnail}" alt="${file.name}" class="file-preview-image">
+                            <div class="video-play-icon">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>` :
+                        `<div class="file-preview-icon">${fileIcon}</div>`
+                    }
+                    <div class="file-preview-name">${file.name}</div>
+                    ${!isImage && !isVideo ? `<div class="file-preview-size">${formatFileSize(file.size)}</div>` : ''}
+                    <button class="file-preview-remove" onclick="removeFile(${taskId}, '${file.id}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getFileIcon(fileType) {
+            if (fileType.includes('pdf')) return '<i class="fas fa-file-pdf"></i>';
+            if (fileType.includes('word') || fileType.includes('document')) return '<i class="fas fa-file-word"></i>';
+            if (fileType.includes('excel') || fileType.includes('spreadsheet')) return '<i class="fas fa-file-excel"></i>';
+            if (fileType.includes('image')) return '<i class="fas fa-file-image"></i>';
+            if (fileType.includes('video')) return '<i class="fas fa-file-video"></i>';
+            return '<i class="fas fa-file"></i>';
+        }
+
+        function updateFileDisplay(taskId) {
+            const container = document.getElementById(`attached-files-${taskId}`);
+            if (!container) return;
+            
+            // Найти задачу
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task && task.attachedFiles) {
+                    container.innerHTML = task.attachedFiles.map(file => createFilePreview(file, taskId)).join('');
+                    break;
+                }
+            }
+        }
+
+        function removeFile(taskId, fileId) {
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task && task.attachedFiles) {
+                    task.attachedFiles = task.attachedFiles.filter(file => file.id != fileId);
+                    updateFileDisplay(taskId);
+                    saveToStorage();
+                    break;
+                }
+            }
+        }
+
+        function openImageModal(imageSrc, imageName) {
+            // Создать модальное окно для просмотра изображения
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 1000; display: flex; 
+                align-items: center; justify-content: center; cursor: pointer;
+            `;
+            
+            const img = document.createElement('img');
+            img.src = imageSrc;
+            img.alt = imageName;
+            img.style.cssText = 'max-width: 90%; max-height: 90%; border-radius: 8px;';
+            
+            modal.appendChild(img);
+            modal.onclick = () => document.body.removeChild(modal);
+            document.body.appendChild(modal);
+        }
+
+        function showVideoInfo(videoName, videoSize) {
+            // Показать информацию о видео (так как само видео не сохраняется)
+            alert(`Видео: ${videoName}\nРазмер: ${videoSize}\n\nВидео сохранено как ссылка. Для просмотра загрузите файл заново.`);
+        }
+
+        // Функции обновления данных задач
+        function updateTaskName(taskId, newName) {
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.name = newName;
+                    saveToStorage();
+                    break;
+                }
+            }
+        }
+
+        function updateTaskDescription(taskId, newDesc) {
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.description = newDesc;
+                    saveToStorage();
+                    break;
+                }
+            }
+        }
+
+        function updateTaskTimeframe(taskId, newTimeframe) {
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.timeframe = newTimeframe;
+                    saveToStorage();
+                    break;
+                }
+            }
+        }
+
+        function updateTaskBudget(taskId, newBudget) {
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.budget = newBudget;
+                    saveToStorage();
+                    break;
+                }
+            }
+        }
+
+        function updateTaskTools(taskId, newTools) {
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.tools = newTools;
+                    saveToStorage();
+                    break;
+                }
+            }
+        }
+
+        function updateTaskHooks(taskId, newHooks) {
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.hooks = newHooks;
+                    saveToStorage();
+                    break;
+                }
+            }
+        }
+
+        // Открыть первый этап по умолчанию
+        setTimeout(() => {
+            toggleStage(1);
+        }, 500);
+    </script>
+</body>
+</html>
