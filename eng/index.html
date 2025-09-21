@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Launch Planner - Bare & Bear</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .brand-info {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .brand-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .brand-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .brand-detail {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+        }
+
+        .progress-overview {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .overall-progress {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .overall-progress h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .progress-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(#667eea 0deg, #e0e0e0 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .progress-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .stage {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .stage-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stage-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .stage-progress {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .stage-content {
+            padding: 20px;
+        }
+
+        .stage-description {
+            margin-bottom: 20px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .tasks-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .task {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .task.completed {
+            background: rgba(76, 175, 80, 0.1);
+            border-left-color: #4caf50;
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .task-checkbox.checked {
+            background: #4caf50;
+            border-color: #4caf50;
+            color: white;
+        }
+
+        .task-name {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .task-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .detail-icon {
+            color: #667eea;
+        }
+
+        .export-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .export-section h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 5px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-target"></i> Brand Launch Planner</h1>
+            <div class="subtitle">Professional Brand Launch Planning Tool</div>
+            
+            <div class="brand-info">
+                <h3>🐻 Bare & Bear</h3>
+                <div class="brand-details">
+                    <div class="brand-detail">
+                        <strong>Philosophy</strong>
+                        "Silk with a smile: comfort without stereotypes"
+                    </div>
+                    <div class="brand-detail">
+                        <strong>Slogan</strong>
+                        "Bare & Bear: Lingerie that makes you smile from the very morning"
+                    </div>
+                    <div class="brand-detail">
+                        <strong>Symbol</strong>
+                        Bear cub with ironic scenarios
+                    </div>
+                    <div class="brand-detail">
+                        <strong>Audience</strong>
+                        Women 25-45 years old
+                    </div>
+                    <div class="brand-detail">
+                        <strong>Uniqueness</strong>
+                        Self-irony, comfort
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overall Progress -->
+        <div class="progress-overview">
+            <div class="overall-progress">
+                <h2><i class="fas fa-chart-line"></i> Overall Launch Progress</h2>
+                <div class="progress-circle" id="overallProgress">
+                    <span class="progress-text" id="progressText">0%</span>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalTasks">0</span>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="completedTasks">0</span>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="remainingTasks">0</span>
+                    <div class="stat-label">Remaining</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="completedStages">0</span>
+                    <div class="stat-label">Stages Completed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stages -->
+        <div id="stages"></div>
+
+        <!-- Export -->
+        <div class="export-section">
+            <h3>📄 Export and Save</h3>
+            <p>Save your progress or export the plan</p>
+            <button class="btn" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> Export to PDF</button>
+            <button class="btn" onclick="printPlan()"><i class="fas fa-print"></i> Print</button>
+            <button class="btn" onclick="saveProgress()"><i class="fas fa-save"></i> Save Progress</button>
+            <button class="btn" onclick="loadProgress()"><i class="fas fa-folder-open"></i> Load Progress</button>
+        </div>
+    </div>
+
+    <script>
+        // Planner Data
+        const planData = {
+            brandName: "Bare & Bear",
+            stages: [
+                {
+                    id: 1,
+                    name: "Stage 1: Packaging Development",
+                    description: "Creating packaging concept with bear cub and ironic scenarios",
+                    tasks: [
+                        {
+                            id: 1,
+                            name: "Define packaging concept",
+                            description: "Integrate bear cub with ironic scenarios (bear cub 'gained weight but happy'), choose materials (silk paper, matte cardboard).",
+                            priority: "high",
+                            timeframe: "Week 1",
+                            budget: "10-30k rub for design and samples",
+                            tools: "Canva or Adobe Illustrator",
+                            hooks: "Packaging that brings a smile before opening",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 2,
+                            name: "Create packaging design",
+                            description: "Hire freelance designer (Kwork/FL.ru), provide bear cub sketches, add QR code linking to website with brand story.",
+                            priority: "high",
+                            timeframe: "Week 1-2",
+                            budget: "15-25k rub",
+                            tools: "Kwork, FL.ru, Adobe Suite",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 3,
+                            name: "Select suppliers",
+                            description: "Search for printing companies in Russia (Printio or local in Moscow/SPb), order sample batches (5-10 pcs).",
+                            priority: "high",
+                            timeframe: "Week 2",
+                            budget: "5-15k rub for samples",
+                            tools: "Printio, local printing companies",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 4,
+                            name: "Create logo",
+                            description: "Integrate bear cub with 'Bare & Bear' name, multiple variants",
+                            priority: "high",
+                            timeframe: "Week 1-2",
+                            budget: "10-20k rub",
+                            tools: "Adobe Illustrator, Figma",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Stage 2: Product Range and Formats",
+                    description: "Development of product line and packaging solutions",
+                    tasks: [
+                        {
+                            id: 5,
+                            name: "Define product range",
+                            description: "Basic models: bras (3-4 models), panties (5-6 models), sets (2-3 variants)",
+                            priority: "high",
+                            timeframe: "Week 1",
+                            budget: "20-40k rub for sample purchases",
+                            tools: "AliExpress, local suppliers",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 6,
+                            name: "Create product categories",
+                            description: "Daily comfort, special occasions, gift sets with bear cub themes",
+                            priority: "medium",
+                            timeframe: "Week 2",
+                            budget: "5-10k rub",
+                            tools: "Product planning tools",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Stage 3: Pricing Strategy",
+                    description: "Development of accessible luxury pricing model",
+                    tasks: [
+                        {
+                            id: 7,
+                            name: "Market research",
+                            description: "Analyze competitor prices, calculate cost structure, determine margin",
+                            priority: "high",
+                            timeframe: "Week 1",
+                            budget: "5-15k rub for market research",
+                            tools: "Market analysis tools, competitor research",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 8,
+                            name: "Set pricing",
+                            description: "Position as 'accessible comfort', competitive pricing with premium packaging",
+                            priority: "high",
+                            timeframe: "Week 2",
+                            budget: "0",
+                            tools: "Pricing calculators",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "Stage 4: Delivery Setup",
+                    description: "Fixed cost delivery strategy with free shipping threshold",
+                    tasks: [
+                        {
+                            id: 9,
+                            name: "Choose delivery service",
+                            description: "Research delivery companies, negotiate rates, test delivery quality",
+                            priority: "high",
+                            timeframe: "Week 1",
+                            budget: "10-20k rub for testing",
+                            tools: "Delivery service research",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        },
+                        {
+                            id: 10,
+                            name: "Set delivery prices",
+                            description: "Fixed cost: 200 rub, free shipping from 2000 rub",
+                            priority: "high",
+                            timeframe: "Week 1",
+                            budget: "0",
+                            tools: "Delivery calculators",
+                            hooks: "",
+                            completed: false,
+                            comment: ""
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderStages();
+            updateProgress();
+        });
+
+        // Render stages
+        function renderStages() {
+            const stagesContainer = document.getElementById('stages');
+            stagesContainer.innerHTML = '';
+
+            planData.stages.forEach(stage => {
+                const stageDiv = document.createElement('div');
+                stageDiv.className = 'stage';
+                stageDiv.id = `stage-${stage.id}`;
+
+                const completedTasks = stage.tasks.filter(task => task.completed).length;
+                const totalTasks = stage.tasks.length;
+                const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+                stageDiv.innerHTML = `
+                    <div class="stage-header" onclick="toggleStage(${stage.id})">
+                        <div class="stage-title">${stage.name}</div>
+                        <div class="stage-progress">${progressPercent}% (${completedTasks}/${totalTasks})</div>
+                    </div>
+                    <div class="stage-content">
+                        <div class="stage-description">${stage.description}</div>
+                        <div class="tasks-grid">
+                            ${stage.tasks.map(task => createTaskElement(task)).join('')}
+                        </div>
+                    </div>
+                `;
+
+                stagesContainer.appendChild(stageDiv);
+            });
+        }
+
+        // Create task element
+        function createTaskElement(task) {
+            return `
+                <div class="task ${task.completed ? 'completed' : ''}" id="task-${task.id}">
+                    <div class="task-header">
+                        <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask(${task.id})">
+                            ${task.completed ? '<i class="fas fa-check"></i>' : ''}
+                        </div>
+                        <div class="task-name">${task.name}</div>
+                    </div>
+                    <div class="task-details">
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="fas fa-calendar-alt"></i></span>
+                            <strong>Timeframe:</strong> ${task.timeframe}
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="fas fa-ruble-sign"></i></span>
+                            <strong>Budget:</strong> ${task.budget}
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon"><i class="fas fa-tools"></i></span>
+                            <strong>Tools:</strong> ${task.tools}
+                        </div>
+                        ${task.hooks ? `<div class="detail-item">
+                            <span class="detail-icon"><i class="fas fa-bullseye"></i></span>
+                            <strong>Hooks:</strong> ${task.hooks}
+                        </div>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Toggle task completion
+        function toggleTask(taskId) {
+            for (let stage of planData.stages) {
+                const task = stage.tasks.find(t => t.id === taskId);
+                if (task) {
+                    task.completed = !task.completed;
+                    renderStages();
+                    updateProgress();
+                    break;
+                }
+            }
+        }
+
+        // Toggle stage visibility
+        function toggleStage(stageId) {
+            const stageElement = document.getElementById(`stage-${stageId}`);
+            const content = stageElement.querySelector('.stage-content');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+            } else {
+                content.style.display = 'none';
+            }
+        }
+
+        // Update progress
+        function updateProgress() {
+            let totalTasks = 0;
+            let completedTasks = 0;
+            let completedStages = 0;
+
+            planData.stages.forEach(stage => {
+                const stageCompleted = stage.tasks.filter(task => task.completed).length;
+                totalTasks += stage.tasks.length;
+                completedTasks += stageCompleted;
+                
+                if (stageCompleted === stage.tasks.length && stage.tasks.length > 0) {
+                    completedStages++;
+                }
+            });
+
+            const progressPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            const remainingTasks = totalTasks - completedTasks;
+
+            // Update progress circle
+            const progressCircle = document.getElementById('overallProgress');
+            progressCircle.style.background = `conic-gradient(#667eea ${progressPercent * 3.6}deg, #e0e0e0 ${progressPercent * 3.6}deg)`;
+            
+            document.getElementById('progressText').textContent = `${progressPercent}%`;
+            document.getElementById('totalTasks').textContent = totalTasks;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            document.getElementById('remainingTasks').textContent = remainingTasks;
+            document.getElementById('completedStages').textContent = completedStages;
+        }
+
+        // Export functions
+        function exportToPDF() {
+            window.print();
+        }
+
+        function printPlan() {
+            window.print();
+        }
+
+        function saveProgress() {
+            const dataStr = JSON.stringify(planData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'bare-bear-launch-plan.json';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function loadProgress() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const loadedData = JSON.parse(e.target.result);
+                            planData.stages = loadedData.stages;
+                            renderStages();
+                            updateProgress();
+                            alert('Progress loaded successfully!');
+                        } catch (error) {
+                            alert('Error loading file!');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+    </script>
+</body>
+</html>
